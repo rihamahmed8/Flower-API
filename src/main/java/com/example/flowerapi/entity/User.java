@@ -1,5 +1,7 @@
 package com.example.flowerapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,6 +25,7 @@ public class User implements UserDetails {
     private String confirmPassword;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JsonManagedReference
     private List<Role> roles;
 
     public User() {
@@ -52,6 +55,30 @@ public class User implements UserDetails {
     public String getPassword() {
         return password;
     }
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
 
     public void setPassword(String password) {
         this.password = password;
@@ -81,6 +108,7 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
@@ -88,6 +116,6 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return name;
     }
 }

@@ -15,7 +15,7 @@ public class CartItem {
     @JsonIgnoreProperties("items")
     private Cart cart;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "flower_id")
     private Flower flower;
 

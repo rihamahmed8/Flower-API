@@ -1,5 +1,7 @@
 package com.example.flowerapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -13,6 +15,7 @@ public class Role implements GrantedAuthority {
     private int id;
     private String name;
     @ManyToMany(mappedBy = "roles")
+    @JsonBackReference
     private List<User> users;
 
     public int getId() {
@@ -23,6 +26,7 @@ public class Role implements GrantedAuthority {
         this.id = id;
     }
 
+    @JsonIgnore
     public String getName() {
         return name;
     }
